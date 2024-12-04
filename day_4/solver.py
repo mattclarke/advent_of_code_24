@@ -16,46 +16,31 @@ for l in lines:
 
 padded.extend([" " * (len(lines[0]) + 8) for _ in range(4)])
 
+funcs = [
+    (lambda r, c, i: (r, c + i)),
+    (lambda r, c, i: (r, c - i)),
+    (lambda r, c, i: (r + i, c)),
+    (lambda r, c, i: (r - i, c)),
+    (lambda r, c, i: (r + i, c + i)),
+    (lambda r, c, i: (r + i, c - i)),
+    (lambda r, c, i: (r - i, c - i)),
+    (lambda r, c, i: (r - i, c + i)),
+]
+
 result = 0
 
 for r in range(len(padded[0])):
     for c in range(len(padded[0])):
         if padded[r][c] != "X":
             continue
-        if padded[r][c:].startswith("XMAS"):
-            result += 1
-        if padded[r][: c + 1].endswith("SAMX"):
-            result += 1
-        letters = "X"
-        for i in range(1, 4):
-            letters += padded[r + i][c]
-        if letters == "XMAS":
-            result += 1
-        letters = "X"
-        for i in range(1, 4):
-            letters += padded[r - i][c]
-        if letters == "XMAS":
-            result += 1
-        letters = "X"
-        for i in range(1, 4):
-            letters += padded[r + i][c + i]
-        if letters == "XMAS":
-            result += 1
-        letters = "X"
-        for i in range(1, 4):
-            letters += padded[r + i][c - i]
-        if letters == "XMAS":
-            result += 1
-        letters = "X"
-        for i in range(1, 4):
-            letters += padded[r - i][c - i]
-        if letters == "XMAS":
-            result += 1
-        letters = "X"
-        for i in range(1, 4):
-            letters += padded[r - i][c + i]
-        if letters == "XMAS":
-            result += 1
+
+        for f in funcs:
+            letters = "X"
+            for i in range(1, 4):
+                rr, cc = f(r, c, i)
+                letters += padded[rr][cc]
+            if letters == "XMAS":
+                result += 1
 
 
 # Part 1 = 2532

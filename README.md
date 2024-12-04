@@ -14,3 +14,7 @@ Very ugly. Can compare the data against sorted and reverse to check they are in 
 ## Day 3
 - Part 1: Regex to find the digits.
 - Part 2: Regex to find "do()", "don't()" and the digits.
+
+## Day 4
+- Part 1: Added padding around the data, so don't need to worry about edges. For every 'X' see if there is a 'MAS' in any direction. 
+- Part 2: For every 'A' see if there is a 'MAS' on the two diagonals. 
