@@ -12,8 +12,6 @@ rules, updates = PUZZLE_INPUT.split("\n\n")
 rules = [line.strip() for line in rules.split("\n") if line]
 updates = [line.strip() for line in updates.split("\n") if line]
 
-result = 0
-
 rules_dict = {}
 
 for r in rules:
@@ -25,7 +23,9 @@ for r in rules:
     sr.add(f)
     rules_dict[s] = sr
 
-invalid = []
+
+result = 0
+invalid = []  # For part 2
 
 for n, up in enumerate(updates):
     values = [int(x) for x in up.split(",")]
