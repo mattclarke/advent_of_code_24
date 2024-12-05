@@ -18,3 +18,7 @@ Very ugly. Can compare the data against sorted and reverse to check they are in 
 ## Day 4
 - Part 1: Added padding around the data, so don't need to worry about edges. For every 'X' see if there is a 'MAS' in any direction. 
 - Part 2: For every 'A' see if there is a 'MAS' on the two diagonals. 
+
+## Day 5
+- Part 1: Go through the updates and see if there are any rule violations.
+- Part 2: On the invalid updates from part 1, find the first invalid ordering and swap the values, then repeat until valid.
