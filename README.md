@@ -22,3 +22,10 @@ Very ugly. Can compare the data against sorted and reverse to check they are in 
 ## Day 5
 - Part 1: Go through the updates and see if there are any rule violations.
 - Part 2: On the invalid updates from part 1, find the first invalid ordering and swap the values, then repeat until valid.
+
+## Day 6
+- Part 1: Standard walking around algorithm.
+- Part 2: First (slow) solution was to try putting a block in every possible position. Takes ~90 seconds with Pypy.
+
+Alternate ideas:
+- Walk until turning right would put you back on the path already visited
