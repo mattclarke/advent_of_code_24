@@ -29,5 +29,4 @@ Very ugly. Can compare the data against sorted and reverse to check they are in 
 
 Only checking the spaces visited in part 1 brings it down to ~28 seconds.
 
-Alternate ideas:
-- Walk until turning right would put you back on the path already visited
+Removing the deep copy brings it down to 3 seconds.

@@ -47,13 +47,12 @@ for r in range(len(lines)):
         visited_2 = {(START, 0)}
         direction = 0
         pos = START
-        layout_copy = copy.deepcopy(layout)
-        layout_copy[r, c] = "#"
+        layout[r, c] = "#"
         while True:
             new_pos = (pos[0] + DIRS[direction][0], pos[1] + DIRS[direction][1])
-            if new_pos not in layout_copy:
+            if new_pos not in layout:
                 break
-            if layout_copy[new_pos] == ".":
+            if layout[new_pos] == ".":
                 if (new_pos, direction) in visited_2:
                     result += 1
                     break
@@ -61,6 +60,7 @@ for r in range(len(lines)):
                 pos = new_pos
             else:
                 direction = (direction + 1) % len(DIRS)
+        layout[r, c] = "."
 
 # Part 2 = 1697
 print(f"answer = {result}")
