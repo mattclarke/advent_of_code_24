@@ -30,3 +30,7 @@ Very ugly. Can compare the data against sorted and reverse to check they are in 
 Only checking the spaces visited in part 1 brings it down to ~28 seconds.
 
 Removing the deep copy brings it down to 3 seconds.
+
+## Day 7
+- Part 1: Build a (pruned) tree where the branches are either + or * the value. Don't add branches if the value exceeds the target.
+- Part 2: Same but now with three branches as we have the "concat" operator.
