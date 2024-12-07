@@ -24,16 +24,19 @@ for d in data:
     while Q:
         v, i = Q.popleft()
         if i + 1 == len(d):
-            if v == total:
-                found = True
-                break
             continue
         nxt = d[i + 1]
 
-        if v + nxt <= total:
-            Q.append((v + nxt, i + 1))
-        if v * nxt <= total:
-            Q.append((v * nxt, i + 1))
+        branches = [v + nxt, v * nxt]
+
+        if i + 1 == len(d) - 1:
+            if total in branches:
+                found = True
+                break
+
+        for b in branches:
+            if b <= total:
+                Q.append((b, i + 1))
     if found:
         result += total
 
@@ -50,19 +53,19 @@ for d in data:
     while Q:
         v, i = Q.popleft()
         if i + 1 == len(d):
-            if v == total:
-                found = True
-                break
             continue
         nxt = d[i + 1]
 
-        if v + nxt <= total:
-            Q.append((v + nxt, i + 1))
-        if v * nxt <= total:
-            Q.append((v * nxt, i + 1))
-        concat = int(str(v) + str(nxt))
-        if concat <= total:
-            Q.append((concat, i + 1))
+        branches = [v + nxt, v * nxt, int(str(v) + str(nxt))]
+
+        if i + 1 == len(d) - 1:
+            if total in branches:
+                found = True
+                break
+
+        for b in branches:
+            if b <= total:
+                Q.append((b, i + 1))
     if found:
         result += total
 
