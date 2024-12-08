@@ -34,3 +34,7 @@ Removing the deep copy brings it down to 3 seconds.
 ## Day 7
 - Part 1: Build a (pruned) tree where the branches are either + or * the value. Don't add branches if the value exceeds the target.
 - Part 2: Same but now with three branches as we have the "concat" operator.
+
+## Day 8
+- Part 1: Iterate over each pair of the same antennas to calculate the Manhattan distance, then add the resonances if they are within bounds.
+- Part 2: Same as part 1 but for each antenna pair repeatedly add the Manhattan distance until the bounds are exceeded. Don't forget that the antennas themselves are a resonance!
