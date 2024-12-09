@@ -70,21 +70,25 @@ for n, s in zip(reversed(files_start), reversed(file_sizes)):
         g = gaps_start[gi]
         for i in range(s):
             processed[g + i], processed[n + i] = processed[n + i], "."
-        # Recalculate the gaps via brute force
-        gaps_start.clear()
-        gap_sizes.clear()
-        in_gap = False
-        gstart = 0
-        for p in range(len(processed)):
-            if processed[p] == ".":
-                if not in_gap:
-                    in_gap = True
-                    gstart = p
-            else:
-                if in_gap:
-                    gaps_start.append(gstart)
-                    gap_sizes.append(p - gstart)
-                    in_gap = False
+        # Adjust gaps
+        if gs == s:
+            # Perfect fit
+            gap_sizes[gi] = 0
+        else:
+            gaps_start.clear()
+            gap_sizes.clear()
+            in_gap = False
+            gstart = 0
+            for p in range(len(processed)):
+                if processed[p] == ".":
+                    if not in_gap:
+                        in_gap = True
+                        gstart = p
+                else:
+                    if in_gap:
+                        gaps_start.append(gstart)
+                        gap_sizes.append(p - gstart)
+                        in_gap = False
 
 result = 0
 for i, c in enumerate(processed):
