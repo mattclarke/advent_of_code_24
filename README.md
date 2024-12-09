@@ -43,4 +43,10 @@ Removing the deep copy brings it down to 3 seconds.
 - Part 1: Starting from the last file, squeeze each element into the gaps.
 - Part 2: Starting from the last file, try to find a gap to put the whole file in. If a gap is found, then move it and then recalculate the gaps (brute force). Takes ~30 seconds with Python and ~3 seconds with Pypy.
 
-TODO: remove the brute force gap calculation for part 2.
+If the file size and gap size are the same then don't need to brute force, just set the gap size to zero. Take ~3 seconds with Python.
+
+Eliminate brute force completely results in ~2 seconds for Python.
+
+## Day 10
+- Part 1:
+- Part 2:

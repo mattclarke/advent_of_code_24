@@ -7,7 +7,7 @@ FILE = sys.argv[1] if len(sys.argv) > 1 else "input.txt"
 with open(FILE) as f:
     PUZZLE_INPUT = f.read()
 
-lines = [int(ch) for ch in PUZZLE_INPUT.strip()]
+data = [int(ch) for ch in PUZZLE_INPUT.strip()]
 
 processed = []
 is_file = True
@@ -19,22 +19,22 @@ gap_sizes = []  # Part2
 files_start = []  # Part2
 file_sizes = []  # Part2
 
-for i in range(len(lines)):
+for i in range(len(data)):
     if is_file:
         v = file_id
         file_id += 1
         is_file = False
-        if lines[i] != 0:
+        if data[i] != 0:
             files_start.append(len(processed))
-            file_sizes.append(lines[i])
+            file_sizes.append(data[i])
     else:
         v = "."
         is_file = True
-        if lines[i] != 0:
+        if data[i] != 0:
             gaps_start.append(len(processed))
-            gap_sizes.append(lines[i])
+            gap_sizes.append(data[i])
 
-    for r in range(lines[i]):
+    for r in range(data[i]):
         processed.append(v)
         if v == ".":
             gaps.append(len(processed) - 1)
@@ -75,20 +75,9 @@ for n, s in zip(reversed(files_start), reversed(file_sizes)):
             # Perfect fit
             gap_sizes[gi] = 0
         else:
-            gaps_start.clear()
-            gap_sizes.clear()
-            in_gap = False
-            gstart = 0
-            for p in range(len(processed)):
-                if processed[p] == ".":
-                    if not in_gap:
-                        in_gap = True
-                        gstart = p
-                else:
-                    if in_gap:
-                        gaps_start.append(gstart)
-                        gap_sizes.append(p - gstart)
-                        in_gap = False
+            gaps_start[gi] = g + s
+            gap_sizes[gi] = gs - s
+            continue
 
 result = 0
 for i, c in enumerate(processed):
