@@ -9,58 +9,17 @@ with open(FILE) as f:
 
 lines = [int(ch) for ch in PUZZLE_INPUT.strip()]
 
-result = 0
 processed = []
 is_file = True
 file_id = 0
 gaps = []
 nums = []
-i = 0
+gaps_start = []  # Part2
+gap_sizes = []  # Part2
+files_start = []  # Part2
+file_sizes = []  # Part2
 
-while i < len(lines):
-    if is_file:
-        v = file_id
-        file_id += 1
-        is_file = False
-    else:
-        v = "."
-        is_file = True
-
-    for r in range(lines[i]):
-        processed.append(v)
-        if v == ".":
-            gaps.append(len(processed) - 1)
-        else:
-            nums.append(len(processed) - 1)
-    i += 1
-
-while nums[~0] > gaps[0]:
-    if not nums:
-        break
-    g = gaps.pop(0)
-    n = nums.pop(~0)
-    processed[g], processed[n] = processed[n], processed[g]
-
-for i, c in enumerate(processed):
-    if c == ".":
-        break
-    result += i * c
-
-# Part 1 = 6330095022244
-print(f"answer = {result}")
-
-result = 0
-processed = []
-is_file = True
-file_id = 0
-gaps_start = []
-gap_sizes = []
-files_start = []
-file_sizes = []
-
-i = 0
-
-while i < len(lines):
+for i in range(len(lines)):
     if is_file:
         v = file_id
         file_id += 1
@@ -77,8 +36,28 @@ while i < len(lines):
 
     for r in range(lines[i]):
         processed.append(v)
-    nums = []
-    i += 1
+        if v == ".":
+            gaps.append(len(processed) - 1)
+        else:
+            nums.append(len(processed) - 1)
+
+processed_1 = processed[:]
+
+while nums[~0] > gaps[0]:
+    if not nums:
+        break
+    g = gaps.pop(0)
+    n = nums.pop(~0)
+    processed_1[g], processed_1[n] = processed_1[n], processed_1[g]
+
+result = 0
+for i, c in enumerate(processed_1):
+    if c == ".":
+        break
+    result += i * c
+
+# Part 1 = 6330095022244
+print(f"answer = {result}")
 
 for n, s in zip(reversed(files_start), reversed(file_sizes)):
     gi = -1
@@ -107,6 +86,7 @@ for n, s in zip(reversed(files_start), reversed(file_sizes)):
                     gap_sizes.append(p - gstart)
                     in_gap = False
 
+result = 0
 for i, c in enumerate(processed):
     if c == ".":
         continue
