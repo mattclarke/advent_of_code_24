@@ -38,3 +38,9 @@ Removing the deep copy brings it down to 3 seconds.
 ## Day 8
 - Part 1: Iterate over each pair of the same antennas to calculate the Manhattan distance, then add the resonances if they are within bounds.
 - Part 2: Same as part 1 but for each antenna pair repeatedly add the Manhattan distance until the bounds are exceeded. Don't forget that the antennas themselves are a resonance!
+
+## Day 9
+- Part 1: Starting from the last file, squeeze each element into the gaps.
+- Part 2: Starting from the last file, try to find a gap to put the whole file in. If a gap is found, then move it and then recalculate the gaps (brute force). Takes ~30 seconds with Python and ~3 seconds with Pypy.
+
+TODO: remove the brute force gap calculation for part 2.
