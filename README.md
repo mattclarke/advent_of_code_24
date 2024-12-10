@@ -48,5 +48,5 @@ If the file size and gap size are the same then don't need to brute force, just 
 Eliminate brute force completely results in ~2 seconds for Python.
 
 ## Day 10
-- Part 1:
-- Part 2:
+- Part 1: Use a queue to keep track of the current position and move to each valid option (BFS). Sum the number of peaks visited.
+- Part 2: Same but count the number of different ways of getting to a particular peak.
