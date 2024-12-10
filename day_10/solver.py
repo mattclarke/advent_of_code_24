@@ -20,28 +20,30 @@ for r, l in enumerate(lines):
             starts.add((r, c))
 
 D = [(0, -1), (-1, 0), (1, 0), (0, 1)]
-result = 0
+
+result_1 = 0
+result_2 = 0
 
 for start in starts:
-    peaks = set()
+    peaks = {}
     Q = deque([start])
     while Q:
         pos = Q.popleft()
         value = layout[pos]
         if value == 9:
-            peaks.add(pos)
+            count = peaks.get(pos, 0)
+            peaks[pos] = count + 1
             continue
         for r, c in D:
             nr = pos[0] + r
             nc = pos[1] + c
             if layout.get((nr, nc)) == value + 1:
                 Q.append((nr, nc))
-    result += len(peaks)
+    result_1 += len(peaks)
+    result_2 += sum(peaks.values())
 
 # Part 1 = 517
-print(f"answer = {result}")
+print(f"answer = {result_1}")
 
-result = 0
-
-# Part 2 =
-print(f"answer = {result}")
+# Part 2 = 1116
+print(f"answer = {result_2}")
