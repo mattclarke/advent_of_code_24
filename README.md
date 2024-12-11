@@ -50,3 +50,7 @@ Eliminate brute force completely results in ~2 seconds for Python.
 ## Day 10
 - Part 1: Use a queue to keep track of the current position and move to each valid option (BFS). Sum the number of peaks visited.
 - Part 2: Same but count the number of different ways of getting to a particular peak.
+
+## Day 11
+- Part 1: Simple brute force.
+- Part 2: Wasted a lot of time trying to work out if there was a pattern before realising it was just a DP problem.
