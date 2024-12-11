@@ -45,25 +45,24 @@ DP = {}
 def solve(node):
     if node in DP:
         return DP[node]
-    if node[2] >= 75:
+    if node[1] >= 75:
         if node not in DP:
-            DP[node] = node[1]
-        return node[1]
+            DP[node] = 1
+        return DP[node]
     new_numbers = process(node[0])
-    unique = set(new_numbers)
     total = 0
-    for u in unique:
-        nnode = (u, new_numbers.count(u), node[2] + 1)
+    for n in new_numbers:
+        nnode = (n, node[1] + 1)
         total += solve(nnode)
     if node not in DP:
-        DP[node] = node[1] * total
-    return node[1] * total
+        DP[node] = total
+    return total
 
 
 result = 0
 for n in NUMBERS:
     # value, multiplier, depth
-    root = (n, 1, 0)
+    root = (n, 0)
     result += solve(root)
 
 # Part 1 = 232454623677743
