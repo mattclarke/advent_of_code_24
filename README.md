@@ -54,3 +54,5 @@ Eliminate brute force completely results in ~2 seconds for Python.
 ## Day 11
 - Part 1: Simple brute force.
 - Part 2: Wasted a lot of time trying to work out if there was a pattern before realising it was just a DP problem.
+
+In fact, it is much much simpler than that: could just use two Counters! See code.

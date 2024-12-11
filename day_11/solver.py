@@ -1,6 +1,6 @@
 import copy
 import sys
-from collections import deque
+from collections import Counter
 
 
 FILE = sys.argv[1] if len(sys.argv) > 1 else "input.txt"
@@ -67,3 +67,16 @@ for n in NUMBERS:
 
 # Part 1 = 232454623677743
 print(f"answer = {result}")
+
+# Internet tip to use Counters
+c1 = Counter(NUMBERS)
+
+for _ in range(75):
+    c2 = Counter()
+    for k, v in c1.items():
+        new_stones = process(k)
+        for ns in new_stones:
+            c2[ns] = c2.get(ns, 0) + v
+    c1 = c2
+
+print(sum(c1.values()))
