@@ -1,4 +1,3 @@
-import copy
 import sys
 from collections import deque
 
@@ -20,7 +19,6 @@ for r, l in enumerate(lines):
             starts.add((r, c))
 
 D = [(0, -1), (-1, 0), (1, 0), (0, 1)]
-
 result_1 = 0
 result_2 = 0
 
@@ -31,8 +29,7 @@ for start in starts:
         pos = Q.popleft()
         value = layout[pos]
         if value == 9:
-            count = peaks.get(pos, 0)
-            peaks[pos] = count + 1
+            peaks[pos] = peaks.get(pos, 0) + 1
             continue
         for r, c in D:
             nr = pos[0] + r
