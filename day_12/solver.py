@@ -44,48 +44,48 @@ result_1 = 0
 result_2 = 0
 
 for k, v in regions.items():
-    hedges = set()
-    vedges = set()
+    edges = set()
     for r, c in v:
         for dr, dc in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
             nr = r + dr
             nc = c + dc
             if (nr, nc) not in v:
-                if dr != 0:
-                    hedges.add((dr, dc, nr, nc))
-                else:
-                    vedges.add((dr, dc, nr, nc))
+                edges.add((dr, dc, nr, nc))
     # Part 1 counts individual edges
-    result_1 += (len(hedges) + len(vedges)) * len(v)
+    result_1 += len(edges) * len(v)
 
     # Part 2 counts collective edges
-    edges = set()
+    all_edges = set()
 
     # Horizontal
-    for dr, dc, r, c in hedges:
+    for dr, dc, r, c in edges:
+        if dr == 0:
+            continue
         rr, cc = r, c
         # Find the right most part of this horizontal edge
-        while (dr, dc, rr, cc - 1) in hedges:
+        while (dr, dc, rr, cc - 1) in edges:
             cc -= 1
         hedge = {(dr, dc, rr, cc)}
-        while (dr, dc, rr, cc + 1) in hedges:
+        while (dr, dc, rr, cc + 1) in edges:
             hedge.add((dr, dc, rr, cc + 1))
             cc += 1
-        edges.add(frozenset(hedge))
+        all_edges.add(frozenset(hedge))
 
     # Vertical
-    for dr, dc, r, c in vedges:
+    for dr, dc, r, c in edges:
+        if dc == 0:
+            continue
         rr, cc = r, c
         # Find the top most part of this vertical edge
-        while (dr, dc, rr - 1, cc) in vedges:
+        while (dr, dc, rr - 1, cc) in edges:
             rr -= 1
         vedge = {(dr, dc, rr, cc)}
-        while (dr, dc, rr + 1, cc) in vedges:
+        while (dr, dc, rr + 1, cc) in edges:
             vedge.add((dr, dc, rr + 1, cc))
             rr += 1
-        edges.add(frozenset(vedge))
+        all_edges.add(frozenset(vedge))
 
-    result_2 += len(edges) * len(v)
+    result_2 += len(all_edges) * len(v)
 
 # Part 1 = 1465112
 print(f"answer = {result_1}")
