@@ -55,10 +55,56 @@ for k, v in regions.items():
 result = 0
 for k, v in regions.items():
     result += len(v) * edges[k]
+
 # Part 1 = 1465112
 print(f"answer = {result}")
 
+edges = {}
+for k, v in regions.items():
+    hedges = set()
+    vedges = set()
+    for r, c in v:
+        for dr, dc in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
+            nr = r + dr
+            nc = c + dc
+            if (nr, nc) not in v:
+                if dr != 0:
+                    hedges.add((dr, nr, nc))
+                else:
+                    vedges.add((dc, nr, nc))
+
+    nedges = 0
+    # Horizontal
+    temp1 = set()
+    for d, r, c in hedges:
+        rr, cc = r, c
+        while (d, rr, cc - 1) in hedges:
+            cc -= 1
+        hedge = {(d, rr, cc)}
+        while (d, rr, cc + 1) in hedges:
+            hedge.add((d, rr, cc + 1))
+            cc += 1
+        fro = frozenset(hedge)
+        temp1.add(fro)
+
+    # Vertical
+    temp2 = set()
+    for d, r, c in vedges:
+        rr, cc = r, c
+        while (d, rr - 1, cc) in vedges:
+            rr -= 1
+        vedge = {(d, rr, cc)}
+        while (d, rr + 1, cc) in vedges:
+            vedge.add((d, rr + 1, cc))
+            rr += 1
+        fro = frozenset(vedge)
+        temp2.add(fro)
+    edges[k] = len(temp1) + len(temp2)
+
 result = 0
 
-# Part 2 =
+for k, v in regions.items():
+    result += len(v) * edges[k]
+
+# Part 2 = 893790
 print(f"answer = {result}")
