@@ -40,26 +40,9 @@ for r in range(len(lines)):
         regions[count] = region
         count += 1
 
+result_1 = 0
+result_2 = 0
 
-edges = {}
-for k, v in regions.items():
-    nedges = 0
-    for r, c in v:
-        for dr, dc in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
-            nr = r + dr
-            nc = c + dc
-            if (nr, nc) not in v:
-                nedges += 1
-    edges[k] = nedges
-
-result = 0
-for k, v in regions.items():
-    result += len(v) * edges[k]
-
-# Part 1 = 1465112
-print(f"answer = {result}")
-
-edges = {}
 for k, v in regions.items():
     hedges = set()
     vedges = set()
@@ -69,42 +52,43 @@ for k, v in regions.items():
             nc = c + dc
             if (nr, nc) not in v:
                 if dr != 0:
-                    hedges.add((dr, nr, nc))
+                    hedges.add((dr, dc, nr, nc))
                 else:
-                    vedges.add((dc, nr, nc))
+                    vedges.add((dr, dc, nr, nc))
+    # Part 1 counts individual edges
+    result_1 += (len(hedges) + len(vedges)) * len(v)
 
-    nedges = 0
+    # Part 2 counts collective edges
+    edges = set()
+
     # Horizontal
-    temp1 = set()
-    for d, r, c in hedges:
+    for dr, dc, r, c in hedges:
         rr, cc = r, c
-        while (d, rr, cc - 1) in hedges:
+        # Find the right most part of this horizontal edge
+        while (dr, dc, rr, cc - 1) in hedges:
             cc -= 1
-        hedge = {(d, rr, cc)}
-        while (d, rr, cc + 1) in hedges:
-            hedge.add((d, rr, cc + 1))
+        hedge = {(dr, dc, rr, cc)}
+        while (dr, dc, rr, cc + 1) in hedges:
+            hedge.add((dr, dc, rr, cc + 1))
             cc += 1
-        fro = frozenset(hedge)
-        temp1.add(fro)
+        edges.add(frozenset(hedge))
 
     # Vertical
-    temp2 = set()
-    for d, r, c in vedges:
+    for dr, dc, r, c in vedges:
         rr, cc = r, c
-        while (d, rr - 1, cc) in vedges:
+        # Find the top most part of this vertical edge
+        while (dr, dc, rr - 1, cc) in vedges:
             rr -= 1
-        vedge = {(d, rr, cc)}
-        while (d, rr + 1, cc) in vedges:
-            vedge.add((d, rr + 1, cc))
+        vedge = {(dr, dc, rr, cc)}
+        while (dr, dc, rr + 1, cc) in vedges:
+            vedge.add((dr, dc, rr + 1, cc))
             rr += 1
-        fro = frozenset(vedge)
-        temp2.add(fro)
-    edges[k] = len(temp1) + len(temp2)
+        edges.add(frozenset(vedge))
 
-result = 0
+    result_2 += len(edges) * len(v)
 
-for k, v in regions.items():
-    result += len(v) * edges[k]
+# Part 1 = 1465112
+print(f"answer = {result_1}")
 
 # Part 2 = 893790
-print(f"answer = {result}")
+print(f"answer = {result_2}")
