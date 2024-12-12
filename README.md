@@ -56,3 +56,13 @@ Eliminate brute force completely results in ~2 seconds for Python.
 - Part 2: Wasted a lot of time trying to work out if there was a pattern before realising it was just a DP problem.
 
 In fact, it is much much simpler than that: could just use two Counters! See code.
+
+## Day 12
+- Part 1: First map out the regions as the puzzle input can have separate regions with the same letter. For each region (a set), count the number of non-region squares surrounding the region to get the number of edges.
+- Part 2: Similar to part 1 but for each edge, collect all the edges that are the same orientation and store those together in a set. I needed to also store the direction of the edge because sometimes the same edge needs to be used twice.
+
+```
+AAAAAA
+AAAA  <- the edge represented by the gap needs to be included twice as it represents two edges, top and bottom.
+AAAAAA
+```
