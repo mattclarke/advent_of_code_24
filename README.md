@@ -59,10 +59,17 @@ In fact, it is much much simpler than that: could just use two Counters! See cod
 
 ## Day 12
 - Part 1: First map out the regions as the puzzle input can have separate regions with the same letter. For each region (a set), count the number of non-region squares surrounding the region to get the number of edges.
-- Part 2: Similar to part 1 but for each edge, collect all the edges that are the same orientation and store those together in a set. I needed to also store the direction of the edge because sometimes the same edge needs to be used twice.
+- Part 2: Similar to part 1 but for each edge, find the left-most or top-most edge (depending on orientation) that is part of the same side and add that to the set of edges. I needed to also store the direction of the edge because sometimes the same edge needs to be used twice.
 
 ```
 AAAAAA
 AAAA  <- the edge represented by the gap needs to be included twice as it represents two edges, top and bottom.
 AAAAAA
 ```
+
+## Day 13
+- Part 1: Initially did it as a BFS but part 2 soon made it clear that solving it as an equation is better.
+- Part 2: Same as part 1, but because the numbers are so big use a binary search to find the number that solves the equation.
+
+Internet tip:
+Cramer's rule makes it trival.

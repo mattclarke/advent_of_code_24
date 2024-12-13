@@ -51,8 +51,6 @@ for pu in puzzle:
 # Part 1 = 29711
 print(f"answer = {int(result)}")
 
-result = 0
-
 
 def binary_search(a, b, p):
     low = 1
@@ -83,6 +81,8 @@ def binary_search(a, b, p):
     return None
 
 
+result = 0
+
 for pu in puzzle:
     a, b, p = pu
     p = (p[0] + 10000000000000, p[1] + 10000000000000)
@@ -93,4 +93,20 @@ for pu in puzzle:
         result += num_a * 3 + num_b
 
 # Part 2 = 94955433618919
+print(f"answer = {int(result)}")
+
+# Using Cramer's rule
+# Two equations of the form, ax + by = c.
+# Solved using determinants.
+result = 0
+
+for pu in puzzle:
+    a, b, p = pu
+    p = (p[0] + 10000000000000, p[1] + 10000000000000)
+    D = a[0] * b[1] - a[1] * b[0]
+    x = (p[0] * b[1] - b[0] * p[1]) / D
+    y = (p[1] * a[0] - a[1] * p[0]) / D
+    if x == int(x) and y == int(y):
+        result += x * 3 + y
+
 print(f"answer = {int(result)}")
