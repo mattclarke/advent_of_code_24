@@ -65,11 +65,8 @@ for k, v in regions.items():
         # Find the right most part of this horizontal edge
         while (dr, dc, rr, cc - 1) in edges:
             cc -= 1
-        hedge = {(dr, dc, rr, cc)}
-        while (dr, dc, rr, cc + 1) in edges:
-            hedge.add((dr, dc, rr, cc + 1))
-            cc += 1
-        all_edges.add(frozenset(hedge))
+        hedge = (dr, dc, rr, cc)
+        all_edges.add(hedge)
 
     # Vertical
     for dr, dc, r, c in edges:
@@ -79,11 +76,8 @@ for k, v in regions.items():
         # Find the top most part of this vertical edge
         while (dr, dc, rr - 1, cc) in edges:
             rr -= 1
-        vedge = {(dr, dc, rr, cc)}
-        while (dr, dc, rr + 1, cc) in edges:
-            vedge.add((dr, dc, rr + 1, cc))
-            rr += 1
-        all_edges.add(frozenset(vedge))
+        vedge = (dr, dc, rr, cc)
+        all_edges.add(vedge)
 
     result_2 += len(all_edges) * len(v)
 
