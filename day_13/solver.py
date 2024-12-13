@@ -28,43 +28,70 @@ for ls in lines:
     p = tuple([int(x) for x in p.split(" ")])
     puzzle.append((a, b, p))
 
-MAX_SCORE = 100000000000000000
 
-
-def solve_1(a, b, p, nmax):
-    DP = {}
-    best = MAX_SCORE
-    Q = deque([(0, 0, 0, 0)])
-    while Q:
-        x, y, na, nb = Q.popleft()
-        if (x, y) == p:
-            best = min(best, na * 3 + nb)
-            continue
-        if na >= nmax or nb >= nmax:
-            continue
-        if DP.get((x, y), MAX_SCORE) <= na * 3 + nb:
-            continue
-        if x > p[0] or y > p[1]:
-            continue
-        DP[x, y] = na * 3 + nb
-        Q.append((x + a[0], y + a[1], na + 1, nb))
-        Q.append((x + b[0], y + b[1], na, nb + 1))
-    return best
+def solve_a(i, xa, ya, xb, yb, yt):
+    return i * xa + ((yt - i * ya) / yb) * xb
 
 
 result = 0
 
 for pu in puzzle:
     a, b, p = pu
-    ans = solve_1(a, b, p, 100)
-    if ans < MAX_SCORE:
-        result += ans
-
+    num_a = None
+    for i in range(100):
+        ans = solve_a(i, a[0], a[1], b[0], b[1], p[1])
+        if ans == p[0]:
+            num_a = i
+            break
+    if num_a is not None:
+        diff = p[0] - (a[0] * num_a)
+        num_b = diff / b[0]
+        result += num_a * 3 + num_b
 
 # Part 1 = 29711
-print(f"answer = {result}")
+print(f"answer = {int(result)}")
 
 result = 0
 
-# Part 2 =
-print(f"answer = {result}")
+
+def binary_search(a, b, p):
+    low = 1
+    high = 10000000000000
+    # Need to check for inversion
+    lowest = solve_a(low, a[0], a[1], b[0], b[1], p[1])
+    highest = solve_a(high, a[0], a[1], b[0], b[1], p[1])
+    if lowest < highest:
+        while low != high:
+            mid = low + (high - low) // 2
+            ans = solve_a(mid, a[0], a[1], b[0], b[1], p[1])
+            if ans < p[0]:
+                low = mid + 1
+            elif ans > p[0]:
+                high = mid
+            else:
+                return mid
+        return None
+    else:
+        while low != high:
+            mid = low + (high - low) // 2
+            ans = solve_a(mid, a[0], a[1], b[0], b[1], p[1])
+            if ans > p[0]:
+                low = mid + 1
+            elif ans < p[0]:
+                high = mid
+            else:
+                return mid
+        return None
+
+
+for pu in puzzle:
+    a, b, p = pu
+    p = (p[0] + 10000000000000, p[1] + 10000000000000)
+    num_a = binary_search(a, b, p)
+    if num_a is not None:
+        diff = p[0] - (a[0] * num_a)
+        num_b = diff / b[0]
+        result += num_a * 3 + num_b
+
+# Part 2 = 94955433618919
+print(f"answer = {int(result)}")
