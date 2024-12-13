@@ -70,7 +70,6 @@ def binary_search(a, b, p):
                 high = mid
             else:
                 return mid
-        return None
     else:
         while low != high:
             mid = low + (high - low) // 2
@@ -81,7 +80,7 @@ def binary_search(a, b, p):
                 high = mid
             else:
                 return mid
-        return None
+    return None
 
 
 for pu in puzzle:
