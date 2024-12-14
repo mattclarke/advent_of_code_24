@@ -77,3 +77,5 @@ Cramer's rule makes it trival.
 ## Day 14
 - Part 1: Use modulo to jump forward 100 seconds.
 - Part 2: I assumed that for the tree that there would be no overlapping robots - it worked out!
+
+Alternative but slower: calculate the safety vs time. When the tree appears the safety should be minimised as the tree is mostly in one quadrant, so the multiplication to calculate the safety would give a lower value (see code).

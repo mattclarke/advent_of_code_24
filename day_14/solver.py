@@ -23,12 +23,12 @@ for l in lines:
     robots.append((r, c, vr, vc))
 
 
-def solve_1(robots, width, height):
+def solve_1(robots, width, height, i=100):
     layout = {}
     for robot in robots:
         r, c, vr, vc = robot
-        nr = (r + 100 * vr) % height
-        nc = (c + 100 * vc) % width
+        nr = (r + i * vr) % height
+        nc = (c + i * vc) % width
         layout[nr, nc] = layout.get((nr, nc), 0) + 1
     quads = [0, 0, 0, 0]
     for r in range(height):
@@ -78,3 +78,18 @@ result = solve_2(robots[:], WIDTH, HEIGHT)
 
 # Part 2 = 6355
 print(f"answer = {result}")
+
+
+# For fun try measuring the safety vs time.
+# The minimum safety should correspond to where the tree is
+# because the tree reduces the spread across the quadrants
+# so the power is less.
+# E.g. if we have 12 bots spread equally across the quads
+# the safety would be 3 * 3 * 3 * 3 = 81
+# But if the bots are mostly grouped into one or two quads then
+# 1 * 5 * 1 * 5 = 25
+powers = []
+for i in range(7000):
+    powers.append(solve_1(robots[:], WIDTH, HEIGHT, i))
+lowest = min(powers)
+print(powers.index(lowest))
