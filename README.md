@@ -73,3 +73,7 @@ AAAAAA
 
 Internet tip:
 Cramer's rule makes it trival.
+
+## Day 14
+- Part 1: Use modulo to jump forward 100 seconds.
+- Part 2: I assumed that for the tree that there would be no overlapping robots - it worked out!

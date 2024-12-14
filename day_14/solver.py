@@ -30,26 +30,18 @@ def solve_1(robots, width, height):
         nr = (r + 100 * vr) % height
         nc = (c + 100 * vc) % width
         layout[nr, nc] = layout.get((nr, nc), 0) + 1
-    # for r in range(height):
-    #     line = []
-    #     for c in range(width):
-    #         line.append(str(layout.get((r,c), ".")))
-    #     print("".join(line))
-    tl = 0
-    tr = 0
-    bl = 0
-    br = 0
+    quads = [0, 0, 0, 0]
     for r in range(height):
         for c in range(width):
             if r < height // 2 and c < width // 2:
-                tl += layout.get((r, c), 0)
+                quads[0] += layout.get((r, c), 0)
             elif r < height // 2 and c > width // 2:
-                tr += layout.get((r, c), 0)
+                quads[1] += layout.get((r, c), 0)
             elif r > height // 2 and c < width // 2:
-                bl += layout.get((r, c), 0)
+                quads[2] += layout.get((r, c), 0)
             elif r > height // 2 and c > width // 2:
-                br += layout.get((r, c), 0)
-    return tl * tr * bl * br
+                quads[3] += layout.get((r, c), 0)
+    return quads[0] * quads[1] * quads[2] * quads[3]
 
 
 result = solve_1(robots[:], WIDTH, HEIGHT)
@@ -58,7 +50,31 @@ result = solve_1(robots[:], WIDTH, HEIGHT)
 # Part 1 = 220971520
 print(f"answer = {result}")
 
-result = 0
 
-# Part 2 =
+def solve_2(robots, width, height):
+    for i in range(1000000000000000000000):
+        layout = {}
+
+        for robot in robots:
+            r, c, vr, vc = robot
+            nr = (r + i * vr) % height
+            nc = (c + i * vc) % width
+            layout[nr, nc] = layout.get((nr, nc), 0) + 1
+        draw = True
+        for v in layout.values():
+            if v > 1:
+                draw = False
+        if not draw:
+            continue
+        for r in range(height):
+            line = []
+            for c in range(width):
+                line.append(str(layout.get((r, c), ".")))
+            print("".join(line))
+        return i
+
+
+result = solve_2(robots[:], WIDTH, HEIGHT)
+
+# Part 2 = 6355
 print(f"answer = {result}")
