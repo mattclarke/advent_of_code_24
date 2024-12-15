@@ -125,10 +125,16 @@ def can_move(layout, pos, dr, clayout):
             )
             if result:
                 if (r, c) not in moved:
-                    clayout[r + dr, c] = clayout[r, c]
+                    clayout[r + dr, c], clayout[r, c] = (
+                        clayout[r, c],
+                        clayout[r + dr, c],
+                    )
                     moved.add((r, c))
                 if (r, c + 1) not in moved:
-                    clayout[r + dr, c + 1] = clayout[r, c + 1]
+                    clayout[r + dr, c + 1], clayout[r, c + 1] = (
+                        clayout[r, c + 1],
+                        clayout[r + dr, c + 1],
+                    )
                     moved.add((r, c + 1))
             return result
         else:
@@ -178,13 +184,6 @@ for nim, m in enumerate(MOVES):
                 layout = clayout
                 pos = (r + dr, c)
             layout[pos] = "."
-            # Clean up any stray ]s or [s
-            for rr in range(R):
-                for cc in range(C):
-                    if layout[rr, cc] == "[" and layout[rr, cc + 1] != "]":
-                        layout[rr, cc] = "."
-                    elif layout[rr, cc] == "]" and layout[rr, cc - 1] != "[":
-                        layout[rr, cc] = "."
 
 result = 0
 for r in range(R):
