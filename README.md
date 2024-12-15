@@ -79,3 +79,9 @@ Cramer's rule makes it trival.
 - Part 2: I assumed that for the tree that there would be no overlapping robots - it worked out!
 
 Alternative but slower: calculate the safety vs time. When the tree appears the safety should be minimised as the tree is mostly in one quadrant, so the multiplication to calculate the safety would give a lower value (see code).
+
+## Day 15:
+- Part 1: Simple enough, when against a crate check for any empty spaces in the direction of the push, if found then shift everything along.
+- Part 2: More complicated in the vertical direction as each crate can push up to others and this can cascade. Use recursion to see if a crate is valid to move by checking the crates it might push can be moved. Use brute force to clean up any unpaired `[`s or `]`s.
+
+Had a bug where the same crate could be moved to a new position multiple times which messed up the `[` and `]`s pairings. Solution is not to move crates that have already moved this turn.
