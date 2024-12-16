@@ -94,3 +94,9 @@ Swapping the crate with the spaces recursively starting from the bottom removes 
 []      ..      []      []
 ..      []      []      []
 ```
+
+## Day 16:
+- Part 1: BFS to find the best route to the target.
+- Part 2: Modify part 1 to keep track of each route as a set and collect all the best routes to the target. Finally, combine all the sets to get the total number of places on a best route to the target.
+
+Runs in about 6 seconds with Python. It would be nice to make it a little quicker.
