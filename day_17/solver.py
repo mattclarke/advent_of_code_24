@@ -52,54 +52,78 @@ def xor(a, b):
     return int(result, 2)
 
 
-ip = 0
-registers = REGISTERS[:]
-output = []
+def solve(registers):
+    ip = 0
+    output = []
 
-while ip < len(commands):
-    opcode = commands[ip]
-    param = to_param(registers, commands[ip + 1])
-    # print("ip", "command", "param", "registers")
-    # print(ip, commands[ip], param, registers)
-    # input()
+    while ip < len(commands):
+        opcode = commands[ip]
+        param = to_param(registers, commands[ip + 1])
+        # print("ip", "command", "param", "registers")
+        # print(ip, commands[ip], param, registers)
+        # input()
 
-    if opcode == 0:
-        # ADV => A div 2^ param
-        registers[A] = int(registers[A] // (2**param))
-    elif opcode == 1:
-        # BXL => bitwise XOR of B and param
-        registers[B] = xor(registers[B], commands[ip + 1])
-    elif opcode == 2:
-        # BST => param mod 8
-        registers[B] = param % 8
-    elif opcode == 3:
-        # JNZ => jump based on A
-        if registers[A] != 0:
-            ip = commands[ip + 1]
-            continue
-    elif opcode == 4:
-        # BXC => bitwise XOR of B and C
-        registers[B] = xor(registers[B], registers[C])
-    elif opcode == 5:
-        # OUT
-        output.append(str(param % 8))
-    elif opcode == 6:
-        # BDV => ADV but for B
-        registers[B] = int(registers[A] // (2**param))
-    elif opcode == 7:
-        # CDV => ADV but for C
-        registers[C] = int(registers[A] // (2**param))
-    else:
-        assert False
-    ip += 2
+        if opcode == 0:
+            # ADV => A div 2^ param
+            registers[A] = int(registers[A] // (2**param))
+        elif opcode == 1:
+            # BXL => bitwise XOR of B and param
+            registers[B] = xor(registers[B], commands[ip + 1])
+        elif opcode == 2:
+            # BST => param mod 8
+            registers[B] = param % 8
+        elif opcode == 3:
+            # JNZ => jump based on A
+            if registers[A] != 0:
+                ip = commands[ip + 1]
+                continue
+        elif opcode == 4:
+            # BXC => bitwise XOR of B and C
+            registers[B] = xor(registers[B], registers[C])
+        elif opcode == 5:
+            # OUT
+            output.append(param % 8)
+        elif opcode == 6:
+            # BDV => ADV but for B
+            registers[B] = int(registers[A] // (2**param))
+        elif opcode == 7:
+            # CDV => ADV but for C
+            registers[C] = int(registers[A] // (2**param))
+        else:
+            assert False
+        ip += 2
+    return output
 
-print(registers)
-result = ",".join(output)
+
+result = ",".join([str(x) for x in solve(REGISTERS[:])])
 
 # Part 1 = 6,0,6,3,0,2,3,1,6
 print(f"answer = {result}")
 
-result = 0
+# There is a pattern in the output, for example the last digit rotates through the values 7 5 6 2 3 0 1
+# But as more digits are added to the front, the last digit rotates slower with A. E.g. when there are two digits, we get eight 7s then eight 5s, and so.
+# When there are x digits, the last digit rotates every 8**(x-1), the second to last rotates every 8**(x-2), and so on.
+# In other words:
+#   The first value changes when increasing A by one
+#   The second value changes when increasing A by 8
+#   The third value changes when increasing A by 64
+#   And so on
 
-# Part 2 =
-print(f"answer = {result}")
+a = 1
+output = []
+
+while output != commands:
+    registers = REGISTERS[:]
+    registers[A] = a
+    output = solve(registers)
+    if len(output) < len(commands):
+        # Short cut: multiplying by 8 increases the number of digits outputed by 1
+        a *= 8
+        continue
+    for i in range(len(output)):
+        if output[~i] != commands[~i]:
+            a += 8 ** (len(commands) - 1 - i)
+            break
+
+# Part 2 = 236539226447469
+print(f"answer = {a}")
