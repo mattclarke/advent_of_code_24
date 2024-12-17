@@ -38,20 +38,6 @@ def to_param(registers, d):
         return None
 
 
-def xor(a, b):
-    a = f"{a:01000b}"
-    b = f"{b:01000b}"
-    result = ""
-    for i, j in zip(a, b):
-        if i == "1" and j == "0":
-            result += "1"
-        elif i == "0" and j == "1":
-            result += "1"
-        else:
-            result += "0"
-    return int(result, 2)
-
-
 def solve(registers):
     ip = 0
     output = []
@@ -68,7 +54,7 @@ def solve(registers):
             registers[A] = int(registers[A] // (2**param))
         elif opcode == 1:
             # BXL => bitwise XOR of B and param
-            registers[B] = xor(registers[B], commands[ip + 1])
+            registers[B] = registers[B] ^ commands[ip + 1]
         elif opcode == 2:
             # BST => param mod 8
             registers[B] = param % 8
@@ -79,7 +65,7 @@ def solve(registers):
                 continue
         elif opcode == 4:
             # BXC => bitwise XOR of B and C
-            registers[B] = xor(registers[B], registers[C])
+            registers[B] = registers[B] ^ registers[C]
         elif opcode == 5:
             # OUT
             output.append(param % 8)
