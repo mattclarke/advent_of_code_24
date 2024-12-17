@@ -100,3 +100,7 @@ Swapping the crate with the spaces recursively starting from the bottom removes 
 - Part 2: Modify part 1 to keep track of each route as a set and collect all the best routes to the target. Finally, combine all the sets to get the total number of places on a best route to the target.
 
 Runs in about 6 seconds with Python. It would be nice to make it a little quicker.
+
+## Day 17:
+- Part 1: Implemented the simple computer.
+- Part 2: It would run for days, so I looked for a pattern. I noticed that the digits for the last output value repeats after 8 steps, and as more output digits are added each step repeats 8**n times before moving to the next value. The second to last value does something similar but 8**(n-1) and so on. That was enough to work out what was going on. See the code for a better description.
