@@ -111,3 +111,4 @@ Runs in about 6 seconds with Python. It would be nice to make it a little quicke
 
 Let's speed it up:
 - Max heap brings it down to ~27 seconds.
+- Use binary search brings it down to <1 second.

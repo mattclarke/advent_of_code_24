@@ -50,12 +50,15 @@ pos = (0, 0)
 size = 70
 goal = (size, size)
 
-part_2_corrupted = corrupted[:1024]
+low = 1024  # We know this works from Part 1
+high = len(corrupted)
 
-while True:
+while low != high:
     Q = [pos]
     seen = set()
     at_goal = False
+    mid = low + ((high - low) // 2)
+    part_2_corrupted = corrupted[:mid]
     while Q and not at_goal:
         x, y = heapq.heappop(Q)
         x, y = -x, -y
@@ -75,10 +78,10 @@ while True:
             if ny < 0 or ny > size:
                 continue
             heapq.heappush(Q, (-nx, -ny))
-    if not at_goal:
-        result = part_2_corrupted[~0]
-        break
-    part_2_corrupted.append(corrupted.pop(0))
+    if at_goal:
+        low = mid + 1
+    else:
+        high = mid
 
 # Part 2 = 15, 20
-print(f"answer = {result}")
+print(f"answer = {corrupted[mid]}")
