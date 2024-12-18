@@ -110,4 +110,4 @@ Runs in about 6 seconds with Python. It would be nice to make it a little quicke
 - Part 2: BFS flood fill as new blocks are added. If the goal cannot be reached then we have our answer. Works but is slow (~44 seconds using Pypy).
 
 Let's speed it up:
-- 
+- Max heap brings it down to ~27 seconds.

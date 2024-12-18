@@ -1,4 +1,5 @@
 import copy
+import heapq
 import sys
 from collections import deque
 
@@ -52,11 +53,12 @@ goal = (size, size)
 part_2_corrupted = corrupted[:1024]
 
 while True:
-    Q = deque([pos])
+    Q = [pos]
     seen = set()
     at_goal = False
     while Q and not at_goal:
-        x, y = Q.popleft()
+        x, y = heapq.heappop(Q)
+        x, y = -x, -y
         if (x, y) == goal:
             at_goal = True
             continue
@@ -72,7 +74,7 @@ while True:
                 continue
             if ny < 0 or ny > size:
                 continue
-            Q.append((nx, ny))
+            heapq.heappush(Q, (-nx, -ny))
     if not at_goal:
         result = part_2_corrupted[~0]
         break
