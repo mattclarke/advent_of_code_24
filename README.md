@@ -104,3 +104,10 @@ Runs in about 6 seconds with Python. It would be nice to make it a little quicke
 ## Day 17:
 - Part 1: Implemented the simple computer.
 - Part 2: It would run for days, so I looked for a pattern. I noticed that the digits for the last output value repeats after 8 steps, and as more output digits are added each step repeats 8**n times before moving to the next value. The second to last value does something similar but 8**(n-1) and so on. That was enough to work out what was going on. See the code for a better description.
+
+## Day 18:
+- Part 1: For fun I did it like Conway's GoL. Might not be the most efficient but is quick enough.
+- Part 2: BFS flood fill as new blocks are added. If the goal cannot be reached then we have our answer. Works but is slow (~44 seconds using Pypy).
+
+Let's speed it up:
+- 
