@@ -12,48 +12,32 @@ lines = [line.strip() for line in PUZZLE_INPUT.split("\n\n") if line]
 towels = lines[0].split(", ")
 patterns = lines[1].split("\n")
 
-result = 0
+
+def solve(pattern, towels, sofar, seen):
+    if sofar in seen:
+        return seen[sofar]
+    if sofar == pattern:
+        return 1
+    if not pattern.startswith(sofar):
+        return 0
+    total = 0
+    for t in towels:
+        total += solve(pattern, towels, sofar + t, seen)
+    seen[sofar] = total
+    return total
+
+
+result_1 = 0
+result_2 = 0
 
 for p in patterns:
-    Q = deque([""])
-    seen = set()
+    seen = {}
+    ans = solve(p, towels, "", seen)
+    result_1 += 1 if ans else 0
+    result_2 += ans
 
-    while Q:
-        pb = Q.popleft()
-        if pb == p:
-            result += 1
-            break
-        if not p.startswith(pb):
-            continue
-        if pb in seen:
-            continue
-        seen.add(pb)
-        for t in towels:
-            Q.append(pb + t)
+# Part 1 = 269
+print(f"answer = {result_1}")
 
-
-# Part 1 = 
-print(f"answer = {result}")
-
-result = 0
-
-for p in patterns:
-    Q = deque([""])
-    seen = set()
-
-    while Q:
-        pb = Q.popleft()
-        if pb == p:
-            result += 1
-            break
-        if not p.startswith(pb):
-            continue
-        if pb in seen:
-            continue
-        seen.add(pb)
-        for t in towels:
-            Q.append(pb + t)
-
-
-# Part 2 = 
-print(f"answer = {result}")
+# Part 2 = 758839075658876
+print(f"answer = {result_2}")

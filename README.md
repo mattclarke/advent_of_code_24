@@ -112,3 +112,7 @@ Runs in about 6 seconds with Python. It would be nice to make it a little quicke
 Let's speed it up:
 - Max heap brings it down to ~27 seconds.
 - Use binary search brings it down to <1 second.
+
+## Day 19:
+- Part 1: Simple BFS initally.
+- Part 2: BFS too slow, so switched to DP. Also, made it solve part 1 at the same time.
