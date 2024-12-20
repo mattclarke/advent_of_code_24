@@ -25,44 +25,64 @@ for r, line in enumerate(lines):
             TRACK[r, c] = ch
 
 
-def find(track, num_cheats, limit=1000000):
-    Q = deque([(START, 0, num_cheats)])
+def find_ref(track):
+    Q = deque([(START, 0)])
     seen = {}
-    solutions = []
 
     while Q:
-        (r, c), steps, ncheats = Q.popleft()
-        if steps > limit:
+        (r, c), steps = Q.popleft()
+        if steps >= seen.get((r, c), 100000000):
             continue
-        if steps >= seen.get((r, c), 100000000000):
-            continue
-        seen[(r, c)] = steps
+        seen[r, c] = steps
         if (r, c) == END:
-            solutions.append(steps)
-            continue
+            return seen
         for dr, dc in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
             nr = r + dr
             nc = c + dc
             if track.get((nr, nc)) == ".":
-                # Normal move
-                Q.append(((nr, nc), steps + 1, ncheats))
-    return solutions
+                Q.append(((nr, nc), steps + 1))
+
+    assert False, "no solution"
 
 
-normal = find(TRACK, 0)[0]
+ref = find_ref(TRACK)
 
-result = 0
 
-for r in range(1, len(lines) - 1):
-    for c in range(1, len(lines[0]) - 1):
-        horiz = TRACK[r, c] == "#" and TRACK[r, c - 1] == "." and TRACK[r, c + 1] == "."
-        vert = TRACK[r, c] == "#" and TRACK[r - 1, c] == "." and TRACK[r + 1, c] == "."
-        if horiz or vert:
-            TRACK[r, c] = "."
-            if find(TRACK, False, normal - 100):
-                result += 1
-            TRACK[r, c] = "#"
+def solve(num_cheat, min_diff=0):
+    results = []
+    for (r, c), current in ref.items():
+        Q = deque([((r, c), 0)])
+        while Q:
+            (rr, cc), n = Q.popleft()
+            if n > num_cheat:
+                continue
+            if TRACK.get((rr, cc)) == ".":
+                prev = ref[rr, cc]
+                if prev > current:
+                    diff = prev - current - n
+                    if diff > min_diff - 1:
+                        results.append(diff - n)
 
+            # Look in all four directions + 1 to see if we can hit a short cut
+            for dr, dc in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+                nr, nc = rr + dr, cc + dc
+                if n == 0 and TRACK.get((nr, nc)) != "#":
+                    continue
+                Q.append(((nr, nc), n + 1))
+                # if TRACK.get((nr, nc)) != "#":
+                #     continue
+                # for i in range(1, num_cheat):
+                #     nnr = nr + dr * i
+                #     nnc = nc + dc * i
+                #     if TRACK.get((nnr, nnc)) == ".":
+                #         prev = ref[nnr, nnc]
+                #         if prev > current:
+                #             diff = prev - current
+                #             results.append(diff - 2)
+    return results
+
+
+result = len(solve(2, 100))
 
 # Part 1 = 1381
 print(f"answer = {result}")
