@@ -25,31 +25,32 @@ for r, line in enumerate(lines):
             TRACK[r, c] = ch
 
 
-def find(track, can_cheat, limit=1000000):
-    Q = deque([(START, 0, can_cheat, False)])
-    solution = []
+def find(track, num_cheats, limit=1000000):
+    Q = deque([(START, 0, num_cheats)])
     seen = {}
+    solutions = []
 
     while Q:
-        (r, c), steps, can_cheat, is_cheating = Q.popleft()
-        if steps >= limit:
+        (r, c), steps, ncheats = Q.popleft()
+        if steps > limit:
             continue
         if steps >= seen.get((r, c), 100000000000):
             continue
         seen[(r, c)] = steps
         if (r, c) == END:
-            solution.append(steps)
-            break
+            solutions.append(steps)
+            continue
         for dr, dc in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
             nr = r + dr
             nc = c + dc
             if track.get((nr, nc)) == ".":
                 # Normal move
-                Q.append(((nr, nc), steps + 1, can_cheat, False))
-    return solution
+                Q.append(((nr, nc), steps + 1, ncheats))
+    return solutions
 
 
-normal = find(TRACK, False)[0]
+normal = find(TRACK, 0)[0]
+
 result = 0
 
 for r in range(1, len(lines) - 1):
@@ -57,11 +58,10 @@ for r in range(1, len(lines) - 1):
         horiz = TRACK[r, c] == "#" and TRACK[r, c - 1] == "." and TRACK[r, c + 1] == "."
         vert = TRACK[r, c] == "#" and TRACK[r - 1, c] == "." and TRACK[r + 1, c] == "."
         if horiz or vert:
-            track = copy.copy(TRACK)
-            track[r, c] = "."
-            ans = find(track, False, normal)
-            if ans[0] <= normal - 100:
+            TRACK[r, c] = "."
+            if find(TRACK, False, normal - 100):
                 result += 1
+            TRACK[r, c] = "#"
 
 
 # Part 1 = 1381
