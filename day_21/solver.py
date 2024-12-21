@@ -12,63 +12,84 @@ lines = [line.strip() for line in PUZZLE_INPUT.split("\n") if line]
 print(lines)
 
 num_pad = {
-    (0, 0): "7",
-    (0, 1): "8",
-    (0, 2): "9",
-    (1, 0): "4",
-    (1, 1): "5",
-    (1, 2): "6",
-    (2, 0): "1",
-    (2, 1): "2",
-    (2, 2): "3",
-    (3, 0): "",
-    (3, 1): "0",
-    (3, 2): "A",
+    "7":(0, 0) ,
+   "8":(0, 1),
+   "9":(0, 2),
+   "4":(1, 0),
+   "5":(1, 1),
+   "6":(1, 2),
+   "1":(2, 0),
+   "2":(2, 1),
+   "3":(2, 2),
+   "":(3, 0) ,
+   "0":(3, 1),
+   "A":(3, 2),
+}
+
+
+dpad = {
+    "" : (0,0),
+    "^": (0,1),
+    "A": (0,2),
+    "<": (1,0),
+    "v": (1,1),
+    ">": (1,2),
 }
 
 
 def solve_numpad(code):
-    Q = deque([(3, 2, 0, (), [])])
-    result = []
-    while Q:
-        r, c, s, n, route = Q.popleft()
-        if s >= 5:
-            continue
-        if num_pad[r, c] == code[len(n)]:
-            # press it
-            route += "A"
-            t = list(n)
-            t.append(num_pad[r, c])
-            n = tuple(t)
-            s = 0
-        if len(n) == len(code):
-            if "".join(n) == code:
-                # complete
-                result.append("".join(route))
-            continue
-
-        for d in ["^", "<", "v", ">"]:
-            route_ = route[:]
-            route_.append(d)
-            if d == "^":
-                if (r - 1, c) in num_pad:
-                    Q.append((r - 1, c, s + 1, n, route_))
-            elif d == "<":
-                if (r, c - 1) in num_pad:
-                    Q.append((r, c - 1, s + 1, n, route_))
-            elif d == "v":
-                if (r + 1, c) in num_pad:
-                    Q.append((r + 1, c, s + 1, n, route_))
-            elif d == ">":
-                if (r, c + 1) in num_pad:
-                    Q.append((r, c + 1, s + 1, n, route_))
+    current = "A"
+    result = ""
+    for c in code:
+        curr = num_pad[current]
+        nxt = num_pad[c]
+        vdiff = curr[0] - nxt[0]
+        hdiff = curr[1] - nxt[1]
+        if vdiff > 0:
+            result += "^"*vdiff
+        elif vdiff < 0:
+            result += "v"*abs(vdiff)
+        if hdiff > 0:
+            result += "<"*hdiff
+        elif hdiff < 0:
+            result += ">"*abs(hdiff)
+        result +="A"
+        current = c
     return result
 
 
-result = solve_numpad("029A")
-result.sort(key=lambda s: len(s))
-lowest = len(result[0])
-result = [x for x in result if len(x) == lowest]
+def solve_dpad(code):
+    current = "A"
+    result = ""
+    for c in code:
+        curr = dpad[current]
+        nxt = dpad[c]
+        vdiff = curr[0] - nxt[0]
+        hdiff = curr[1] - nxt[1]
+        if vdiff > 0:
+            result += "^"*vdiff
+        elif vdiff < 0:
+            result += "v"*abs(vdiff)
+        if hdiff > 0:
+            result += "<"*hdiff
+        elif hdiff < 0:
+            result += ">"*abs(hdiff)
+        result +="A"
+        current = c
+    return result
+
+
+result = 0
+for line in lines:
+    ans = solve_numpad(line)
+    print(ans)
+    ans = solve_dpad(ans)
+    print(ans)
+    print(len(ans))
+    ans = solve_dpad(ans)
+    print(len(ans))
+    print(ans)
+    result += len(ans) * int(line.replace("A", ""))
 
 # Part 1 =
 print(f"answer = {result}")
