@@ -104,15 +104,17 @@ result = 0
 for line in lines:
     print(line)
     ans = solve_numpad(line)
-    uniq = set()
-    for a in ans:
-        temp = solve_dpad(a)
-        uniq = uniq.union(set(temp))
-    best = 10000000000000000000
-    for u in uniq:
-        temp = solve_dpad(u, best)
-        if temp:
-            best = min(best, len(temp[0]))
+
+    temp = ans
+    for _ in range(2):
+        best = 100000000000000000000000000
+        new_t = []
+        for t in temp:
+            a = solve_dpad(t)
+            if a:
+                best = min(best, len(a[0]))
+            new_t.extend(a)
+        temp = new_t
 
     result += best * int(line.replace("A", ""))
     print(best)
