@@ -91,9 +91,9 @@ def solve_dpad(code, best=1000000000):
         if nr > r:
             Q.append(((r + 1, c), n, route + "v"))
         if nr < r:
-            Q.append(((r - 1, c), n, route + "^"))
+            Q.append(((r - (r - nr), c), n, route + "^" * (r - nr)))
         if nc > c:
-            Q.append(((r, c + 1), n, route + ">"))
+            Q.append(((r, c + (nc - c)), n, route + ">" * (nc - c)))
         if nc < c:
             Q.append(((r, c - 1), n, route + "<"))
 
