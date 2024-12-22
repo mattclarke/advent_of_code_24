@@ -67,6 +67,24 @@ def solve_numpad(code):
     return results
 
 
+moves = {
+    "v<<A",
+    "v<A",
+    "<A",
+    "vA",
+    ">A",
+    "^A",
+    "v>A",
+    "<<A",
+    "^<A",
+    ">^A",
+    ">>^A",
+    ">>A",
+    "^>A",
+    "A",
+}
+
+
 def solve_dpad(code, best=1000000000):
     current = "A"
     result = ""
@@ -133,27 +151,86 @@ for line in lines:
         for _ in range(2):
             a = solve_dpad(a)
         best = min(best, len(a))
-        continue
 
     result += best * int(line.replace("A", ""))
 
 # Part 1 = 156714
 print(f"answer = {result}")
 
+
+def fast(code, n, solutions):
+    if n == -1:
+        print(f"miss {code}")
+        result = solve_dpad(code)
+        solutions[0][code] = result
+        return result
+    poss = solutions[n]
+    result = ""
+    while code:
+        # print("code", code, n)
+        to_add = None
+        for p in poss:
+            if code.startswith(p):
+                to_add = p
+                break
+        # print("to_add", to_add)
+        # input()
+        if not to_add:
+            result += fast(code, n - 1, solutions)
+            break
+        else:
+            result += poss[to_add]
+            code = code[len(to_add) :]
+    return result
+
+
+solutions = {
+    0: {},
+    1: {},
+}
+
+for a in moves:
+    t = solve_dpad(a)
+    solutions[0][a] = t
+    solutions[1][t] = solve_dpad(t)
+
+# print(solutions)
+#
+# print(fast("v<<A>>^Av<A<A>>^AvAA^<A>A", 1, solutions))
+# print(solve_dpad("v<<A>>^Av<A<A>>^AvAA^<A>A"))
+
 result = 0
-for line in lines[:1]:
-    print(line)
+for line in lines:
     ans = solve_numpad(line)
     best = 1000000000000
-    for aa in ans[:1]:
-        a = "<"
-        for _ in range(5):
-            a = solve_dpad(a)
-            print(a)
+    for aa in ans:
+        a = aa
+        for i in range(2):
+            # print("a", a)
+            if i == 0:
+                a = solve_dpad(a)
+            else:
+                a = fast(a, i, solutions)
         best = min(best, len(a))
-        continue
 
     result += best * int(line.replace("A", ""))
+
+# result = 0
+# for line in lines[:1]:
+#     print(line)
+#     ans = solve_numpad(line)
+#     best = 1000000000000
+#     for aa in "<>^v":
+#         a = aa
+#         print(a)
+#         for _ in range(5):
+#             a = solve_dpad(a)
+#             print(a)
+#         best = min(best, len(a))
+#         print("=====")
+#
+#     result += best * int(line.replace("A", ""))
+# print(solve_dpad(">>^A"))
 
 # Part 2 =
 print(f"answer = {result}")
