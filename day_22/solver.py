@@ -10,19 +10,24 @@ with open(FILE) as f:
 
 lines = [int(line.strip()) for line in PUZZLE_INPUT.split("\n") if line]
 
+
+def generate(sn):
+    sn ^= sn * 64
+    sn %= 16777216
+    sn ^= sn // 32
+    sn %= 16777216
+    sn ^= sn * 2048
+    sn %= 16777216
+    return sn
+
+
 result = 0
 
 for i, line in enumerate(lines):
     sn = line
     for _ in range(2000):
-        sn ^= sn * 64
-        sn %= 16777216
-        sn ^= sn // 32
-        sn %= 16777216
-        sn ^= sn * 2048
-        sn %= 16777216
+        sn = generate(sn)
     result += sn
-
 
 # Part 1 = 18525593556
 print(f"answer = {result}")
@@ -35,12 +40,7 @@ values = []
 diffs = []
 last = lines[0] % 10
 for i in range(16777217):
-    sn ^= sn * 64
-    sn %= 16777216
-    sn ^= sn // 32
-    sn %= 16777216
-    sn ^= sn * 2048
-    sn %= 16777216
+    sn = generate(sn)
     if sn in seen:
         break
     seen.add(sn)
@@ -50,16 +50,9 @@ for i in range(16777217):
 
 offsets = []
 for i, line in enumerate(lines):
-    sn = line
-    sn ^= sn * 64
-    sn %= 16777216
-    sn ^= sn // 32
-    sn %= 16777216
-    sn ^= sn * 2048
-    sn %= 16777216
+    sn = generate(line)
     found = values.index(sn)
     offsets.append(found)
-
 
 best = 0
 for i in range(3, 2000):
@@ -78,7 +71,6 @@ for i in range(3, 2000):
                 break
     if result > best:
         best = result
-
 
 # Part 2 = 2089
 print(f"answer = {best}")
