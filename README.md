@@ -118,6 +118,7 @@ Repeat if A is not zero
 ```
 We know that the final value of A is 0 because it exits, so we can work backwards.
 
+TODO: finish this!
 
 ## Day 18:
 - Part 1: For fun I did it like Conway's GoL. Might not be the most efficient but is quick enough.
@@ -130,3 +131,18 @@ Let's speed it up:
 ## Day 19:
 - Part 1: Simple BFS initally.
 - Part 2: BFS too slow, so switched to DP. Also, made it solve part 1 at the same time.
+
+## Day 20:
+- Part 1: As there is only one path and no branches, I first solve it with no cheats to get a reference value for each step. Then for every step along the route, find the positions reachable within the cheat limit. Calculate the new time based on the reference time difference for the current position and the positions reachable by cheating. If the new time is 100+ picoseconds quicker add 1 to the result.
+- Part 2: Same but with a bigger cheat time.
+
+## Day 21:
+- Part 1:
+- Part 2:
+
+## Day 22:
+- Part 1: Simple - just a test that one has entered the algorithm correctly.
+- Part 2: As it is pseudo-random and the maximum number of values possible is 16777216 due to the "prune", I decided to calculate all the values for one of the seeds (the reference seed). For the remaining seeds, I only need to calculate the first value and then find its index relative to the same value in the reference seed to get an offset. For the first 2000 values of the reference make a rolling window of the differences and look for the same pattern relative to the offsets. If it matches add the corresponding value.
+
+Slow at ~30s for Pypy and feels a bit brute force. Afterwards, I tried a true brute force solution which didn't finish before I gave up after a minute or two.
+
