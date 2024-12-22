@@ -9,7 +9,6 @@ with open(FILE) as f:
     PUZZLE_INPUT = f.read()
 
 lines = [line.strip() for line in PUZZLE_INPUT.split("\n") if line]
-print(lines)
 
 num_pad = {
     "7": (0, 0),
@@ -69,61 +68,92 @@ def solve_numpad(code):
 
 
 def solve_dpad(code, best=1000000000):
-    Q = deque([(dpad["A"], 0, "")])
-    results = []
-    while Q:
-        (r, c), n, route = Q.popleft()
-        if (r, c) == (0, 0):
-            continue
-        if len(route) > best:
-            continue
-        if n == len(code):
-            if len(route) < best:
-                best = len(route)
-                results = []
-            results.append(route)
-            continue
-        nr, nc = dpad[code[n]]
-        if (r, c) == (nr, nc):
-            Q.append(((r, c), n + 1, route + "A"))
-            continue
+    current = "A"
+    result = ""
+    for c in code:
+        if current == "A" and c == "<":
+            result += "v<<"
+        elif current == "A" and c == "v":
+            result += "v<"
+        elif current == "A" and c == "^":
+            result += "<"
+        elif current == "A" and c == ">":
+            result += "v"
 
-        if nr > r:
-            Q.append(((r + 1, c), n, route + "v"))
-        if nr < r:
-            Q.append(((r - (r - nr), c), n, route + "^" * (r - nr)))
-        if nc > c:
-            Q.append(((r, c + (nc - c)), n, route + ">" * (nc - c)))
-        if nc < c:
-            Q.append(((r, c - 1), n, route + "<"))
+        elif current == "^" and c == "<":
+            result += "v<"
+        elif current == "^" and c == "v":
+            result += "v"
+        elif current == "^" and c == "A":
+            result += ">"
+        elif current == "^" and c == ">":
+            result += "v>"
 
-    return results
+        elif current == ">" and c == "<":
+            result += "<<"
+        elif current == ">" and c == "v":
+            result += "<"
+        elif current == ">" and c == "A":
+            result += "^"
+        elif current == ">" and c == "^":
+            result += "^<"
+
+        elif current == "v" and c == "<":
+            result += "<"
+        elif current == "v" and c == "^":
+            result += "^"
+        elif current == "v" and c == "A":
+            result += "^>"
+        elif current == "v" and c == ">":
+            result += ">"
+
+        elif current == "<" and c == "v":
+            result += ">"
+        elif current == "<" and c == "^":
+            result += ">^"
+        elif current == "<" and c == "A":
+            result += ">>^"
+        elif current == "<" and c == ">":
+            result += ">>"
+        elif current == c:
+            pass
+        else:
+            assert False, f"{current}, {c}"
+        result += "A"
+        current = c
+    return result
 
 
 result = 0
 for line in lines:
-    print(line)
     ans = solve_numpad(line)
-
-    temp = ans
-    for _ in range(2):
-        best = 100000000000000000000000000
-        new_t = []
-        for t in temp:
-            a = solve_dpad(t)
-            if a:
-                best = min(best, len(a[0]))
-            new_t.extend(a)
-        temp = new_t
+    best = 1000000000000
+    for aa in ans:
+        a = aa
+        for _ in range(2):
+            a = solve_dpad(a)
+        best = min(best, len(a))
+        continue
 
     result += best * int(line.replace("A", ""))
-    print(best)
-    print("=================")
 
 # Part 1 = 156714
 print(f"answer = {result}")
 
 result = 0
+for line in lines[:1]:
+    print(line)
+    ans = solve_numpad(line)
+    best = 1000000000000
+    for aa in ans[:1]:
+        a = "<"
+        for _ in range(5):
+            a = solve_dpad(a)
+            print(a)
+        best = min(best, len(a))
+        continue
+
+    result += best * int(line.replace("A", ""))
 
 # Part 2 =
 print(f"answer = {result}")
