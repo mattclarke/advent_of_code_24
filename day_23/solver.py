@@ -36,21 +36,26 @@ for t in tees:
 # Part 1 = 1218
 print(f"answer = {len(contains_t)}")
 
-result = []
+result = set()
 
 for n, nodes in layout.items():
-    scores = {}
+    scores = defaultdict(set)
+    # scores[n] = nodes
     for nn in nodes:
-        scores[nn] = scores.get(nn, 0) + 1
+        scores[nn].add(n)
+        scores[nn].add(nn)
         conns = layout[nn]
         for nnn in layout[nn]:
-            scores[nnn] = scores.get(nnn, 0) + 1
-    ans = [n]
-    for k, v in scores.items():
-        if v == scores[n] - 1:
-            ans.append(k)
-    if len(ans) > len(result):
-        result = sorted(ans)
+            if nnn in nodes:
+                scores[nnn].add(nn)
+
+    for k, s in scores.items():
+        count = 0
+        for kk, ss in scores.items():
+            if s == ss:
+                count += 1
+        if count == len(s) - 1 and len(s) > len(result):
+            result = s
 
 # Part 2 = ah,ap,ek,fj,fr,jt,ka,ln,me,mp,qa,ql,zg
-print(f"answer = {','.join(result)}")
+print(f"answer = {','.join(sorted(result))}")
