@@ -40,7 +40,6 @@ result = set()
 
 for n, nodes in layout.items():
     scores = defaultdict(set)
-    # scores[n] = nodes
     for nn in nodes:
         scores[nn].add(n)
         scores[nn].add(nn)
@@ -59,3 +58,31 @@ for n, nodes in layout.items():
 
 # Part 2 = ah,ap,ek,fj,fr,jt,ka,ln,me,mp,qa,ql,zg
 print(f"answer = {','.join(sorted(result))}")
+
+
+def bron_kerbosch(layout, P, R, X, cliques, depth=0):
+    # Finds the maximal cliques.
+    # I.e. if A, B, C are in a clique then it returns {A, B, C} and skips {A, B}, etc.
+    # P = prospective nodes
+    # R = current clique
+    # X = nodes already processed (avoids getting the same clique multiple times)
+    # print(P, R, X, depth)
+    if not P and not X:
+        cliques.append(R)
+        return
+    while P:
+        v = P.pop()
+        bron_kerbosch(
+            layout,
+            P.intersection(layout[v]),
+            R.union([v]),
+            X.intersection(layout[v]),
+            cliques,
+            depth + 1,
+        )
+        X.add(v)
+
+
+cliques = []
+bron_kerbosch(layout, set(layout.keys()), set(), set(), cliques)
+print(cliques)

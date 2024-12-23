@@ -146,6 +146,8 @@ Let's speed it up:
 
 Slow at ~30s for Pypy and feels a bit brute force. Afterwards, I tried a true brute force solution which didn't finish before I gave up after a minute or two.
 
+Internet solution: during part 1, track the last four differences and if they haven't been seen before add them to the total for that difference pattern. To get the answer, find the maximum total.
+
 ## Day 23:
 - Part 1: Build the graph and collect the tees. For the tees, find the the groups of three using three nested loops.
 - Part 2: Loop through all the node. For each one, give all the nodes it connects to a score of 1, then for each of those nodes do the same. The starting node will have the largest score but the biggest group (not including the starting node) will have a score of the largest minus 1.
@@ -153,3 +155,5 @@ Slow at ~30s for Pypy and feels a bit brute force. Afterwards, I tried a true br
 This was a bit of a fluke, it only works because each node has the same number of connections and the most number of connections is one less than the total number of connections.
 
 A more general solution is create sets for each node and look for repetitions of sets. If there is a repetition of a set equal to the length of the set minus one, then that is a group where all are connected to each other. Just need to find the biggest group.
+
+There is also the Bron-Kerbosch algorithm for finding "cliques". See the code for an example.

@@ -21,56 +21,31 @@ def generate(sn):
     return sn
 
 
+diff_to_value = {}
 result = 0
 
 for i, line in enumerate(lines):
     sn = line
+    seen = set()
+    Q = deque([])
+    last = line % 10
     for _ in range(2000):
         sn = generate(sn)
+        Q.append((sn % 10) - last)
+        last = sn % 10
+        if len(Q) > 4:
+            Q.popleft()
+        if len(Q) == 4:
+            t = tuple(Q)
+            if t not in seen:
+                seen.add(t)
+                diff_to_value[t] = diff_to_value.get(t, 0) + last
     result += sn
 
 # Part 1 = 18525593556
 print(f"answer = {result}")
 
-result = 0
-
-sn = lines[0]
-seen = set()
-values = []
-diffs = []
-last = lines[0] % 10
-for i in range(16777217):
-    sn = generate(sn)
-    if sn in seen:
-        break
-    seen.add(sn)
-    values.append(sn)
-    diffs.append(sn % 10 - last)
-    last = sn % 10
-
-offsets = []
-for i, line in enumerate(lines):
-    sn = generate(line)
-    found = values.index(sn)
-    offsets.append(found)
-
-best = 0
-for i in range(3, 2000):
-    v = values[i] % 10
-    d = [diffs[i - 3], diffs[i - 2], diffs[i - 1], diffs[i]]
-    result = 0
-    for o in offsets:
-        for j in range(o, o + 2000 - 3):
-            if (
-                d[0] == diffs[j]
-                and d[1] == diffs[j + 1]
-                and d[2] == diffs[j + 2]
-                and d[3] == diffs[j + 3]
-            ):
-                result += (values[j + 3]) % 10
-                break
-    if result > best:
-        best = result
+result = max(diff_to_value.values())
 
 # Part 2 = 2089
-print(f"answer = {best}")
+print(f"answer = {result}")
