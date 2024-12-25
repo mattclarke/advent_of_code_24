@@ -157,3 +157,11 @@ This was a bit of a fluke, it only works because each node has the same number o
 A more general solution is create sets for each node and look for repetitions of sets. If there is a repetition of a set equal to the length of the set minus one, then that is a group where all are connected to each other. Just need to find the biggest group.
 
 There is also the Bron-Kerbosch algorithm for finding "cliques". See the code for an example.
+
+## Day 24:
+- Part 1: Testing that the algorithm was implemented correctly
+- Part 2: First solved it by hand!
+
+## Day 25:
+- Part 1: Simple!
+- Part 2: No part 2 as usual!
