@@ -162,6 +162,15 @@ There is also the Bron-Kerbosch algorithm for finding "cliques". See the code fo
 - Part 1: Testing that the algorithm was implemented correctly
 - Part 2: First solved it by hand!
 
+Now done in code! 
+- Set all bits of X to 1 and Y to 0 then run the algorithm. 
+- Find the least significant 0 in the answer and start swapping outputs until that is fixed
+- Then check some random additions, if they pass recurse. If they don't pass then backtrack.
+
+Code is ugly and slow (~30s), but I've had enough for now!
+One possible speed up is to build a graph of the non-Z outputs, then it will be possible to check whether an output is relevant to the current Z thus reducing the values we need to consider when swapping.
+E.g. for z09, rkf depends on x08, y08, x09, y09, x07 and y07, so is worth trying to swap.
+
 ## Day 25:
 - Part 1: Simple!
 - Part 2: No part 2 as usual!
