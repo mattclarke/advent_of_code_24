@@ -1,5 +1,4 @@
 import copy
-import random
 import sys
 from collections import deque
 
@@ -103,9 +102,15 @@ def solve(values, gates, outputs, x, y):
 
 
 def test_solution(outputs, z):
-    for i in range(1000):
-        r = random.randint(0, 2**z - 1)
-        s = random.randint(0, 2**z - 1)
+    for i in range(z):
+        # Simple add
+        r = 1 << i
+        s = 1 << i
+        ans, _ = solve(copy.copy(VALUES), deque(GATES[:]), deque(outputs[:]), r, s)
+        if ans != r + s:
+            return False
+        r = 1 << i
+        s = min(3 << i, 2**z - 1)
         ans, _ = solve(copy.copy(VALUES), deque(GATES[:]), deque(outputs[:]), r, s)
         if ans != r + s:
             return False
@@ -131,10 +136,14 @@ def recursive(outputs, swapped):
         for i, o1 in enumerate(outputs):
             if o1 in swapped:
                 continue
+            if o1.startswith("z") and o1 != f"z{z:02}":
+                continue
             for j, o2 in enumerate(outputs):
                 if j <= i:
                     continue
                 if o2 in swapped:
+                    continue
+                if o2.startswith("z") and o2 != f"z{z:02}":
                     continue
                 outputs[i], outputs[j] = outputs[j], outputs[i]
                 nz, nzeds = solve(
@@ -143,7 +152,7 @@ def recursive(outputs, swapped):
                 if nz:
                     uz = 45 - nzeds.rfind("0")
                     if uz > z:
-                        if test_solution(outputs, z):
+                        if test_solution(outputs, uz - 1):
                             valid, result = recursive(
                                 outputs, swapped.union({outputs[i], outputs[j]})
                             )
@@ -154,7 +163,7 @@ def recursive(outputs, swapped):
 
 
 _, result = recursive(OUTPUTS[:], set())
-result = ','.join(sorted(list(result)))
+result = ",".join(sorted(list(result)))
 
 # Part 2 = jgb,rkf,rrs,rvc,vcg,z09,z20,z24
 print(f"answer = {result}")
