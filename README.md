@@ -144,6 +144,15 @@ I actually tried this solution earlier on but I must have made a mistake because
 
 The mistake was that when calculating the d-pad, the order of, say, "^>" matters. If we change it to ">^" then we get the wrong answer! Using BFS to generate the d-pad would have caught this, so I added it back.
 
+From the internet: why the order matters. Consider this example:
+```
+<^A (3)  ->  v<<A  >^A  >A (9)  ->  <vA<AA>>^A  vA<^A>A  vA^A (21)
+^<A (3)  ->  <A  v<A  >>^A (9)  ->  v<<A>>^A  <vA<A>>^A  vAA<^A>A (25)
+```
+It shows that "<^A" is shorter than "^<A".
+
+To generalise, each left step from A is more expensive for the next robot, so we should always do the < key first, then the ^ or v key, then the > key (where the rules permit). E.g. "<^" not "^<", "^>" not ">^", and so on.
+
 ## Day 22:
 - Part 1: Simple - just a test that one has entered the algorithm correctly.
 - Part 2: As it is pseudo-random and the maximum number of values possible is 16777216 due to the "prune", I decided to calculate all the values for one of the seeds (the reference seed). For the remaining seeds, I only need to calculate the first value and then find its index relative to the same value in the reference seed to get an offset. For the first 2000 values of the reference make a rolling window of the differences and look for the same pattern relative to the offsets. If it matches add the corresponding value.

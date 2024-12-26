@@ -90,6 +90,7 @@ moves = {
 }
 
 
+# Slow BFS version
 def solve_dpad(code):
     best = 100000000000000
     Q = deque([(dpad["A"], 0, "")])
@@ -120,61 +121,61 @@ def solve_dpad(code):
     return results
 
 
-# def solve_dpad(code):
-#     current = "A"
-#     result = ""
-#     for c in code:
-#         if current == "A" and c == "<":
-#             result += "v<<"
-#         elif current == "A" and c == "v":
-#             result += "<v"
-#         elif current == "A" and c == "^":
-#             result += "<"
-#         elif current == "A" and c == ">":
-#             result += "v"
-#
-#         elif current == "^" and c == "<":
-#             result += "v<"
-#         elif current == "^" and c == "v":
-#             result += "v"
-#         elif current == "^" and c == "A":
-#             result += ">"
-#         elif current == "^" and c == ">":
-#             result += "v>"
-#
-#         elif current == ">" and c == "<":
-#             result += "<<"
-#         elif current == ">" and c == "v":
-#             result += "<"
-#         elif current == ">" and c == "A":
-#             result += "^"
-#         elif current == ">" and c == "^":
-#             result += "<^"
-#
-#         elif current == "v" and c == "<":
-#             result += "<"
-#         elif current == "v" and c == "^":
-#             result += "^"
-#         elif current == "v" and c == "A":
-#             result += "^>"
-#         elif current == "v" and c == ">":
-#             result += ">"
-#
-#         elif current == "<" and c == "v":
-#             result += ">"
-#         elif current == "<" and c == "^":
-#             result += ">^"
-#         elif current == "<" and c == "A":
-#             result += ">>^"
-#         elif current == "<" and c == ">":
-#             result += ">>"
-#         elif current == c:
-#             pass
-#         else:
-#             assert False, f"{current}, {c}"
-#         result += "A"
-#         current = c
-#     return {result}
+def solve_dpad(code):
+    current = "A"
+    result = ""
+    for c in code:
+        if current == "A" and c == "<":
+            result += "v<<"
+        elif current == "A" and c == "v":
+            result += "<v"
+        elif current == "A" and c == "^":
+            result += "<"
+        elif current == "A" and c == ">":
+            result += "v"
+
+        elif current == "^" and c == "<":
+            result += "v<"
+        elif current == "^" and c == "v":
+            result += "v"
+        elif current == "^" and c == "A":
+            result += ">"
+        elif current == "^" and c == ">":
+            result += "v>"
+
+        elif current == ">" and c == "<":
+            result += "<<"
+        elif current == ">" and c == "v":
+            result += "<"
+        elif current == ">" and c == "A":
+            result += "^"
+        elif current == ">" and c == "^":
+            result += "<^"
+
+        elif current == "v" and c == "<":
+            result += "<"
+        elif current == "v" and c == "^":
+            result += "^"
+        elif current == "v" and c == "A":
+            result += "^>"
+        elif current == "v" and c == ">":
+            result += ">"
+
+        elif current == "<" and c == "v":
+            result += ">"
+        elif current == "<" and c == "^":
+            result += ">^"
+        elif current == "<" and c == "A":
+            result += ">>^"
+        elif current == "<" and c == ">":
+            result += ">>"
+        elif current == c:
+            pass
+        else:
+            assert False, f"{current}, {c}"
+        result += "A"
+        current = c
+    return {result}
 
 
 result = 0
