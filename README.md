@@ -142,7 +142,7 @@ Let's speed it up:
 
 I actually tried this solution earlier on but I must have made a mistake because I got the wrong answer. Reimplementing it from sratch on the 26th worked.
 
-The mistake was that when calculating the numpad, the order of, say, "^>" matters. If we change it to ">^" then we get the wrong answer! Using BFS to generate the numpad would have caught this.
+The mistake was that when calculating the d-pad, the order of, say, "^>" matters. If we change it to ">^" then we get the wrong answer! Using BFS to generate the d-pad would have caught this, so I added it back.
 
 ## Day 22:
 - Part 1: Simple - just a test that one has entered the algorithm correctly.

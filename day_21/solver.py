@@ -82,78 +82,108 @@ moves = {
     ">>A",
     "^>A",
     "^<A",
+    ">vA",
     "v<<A",
     ">>^A",
+    "<v<A",
+    ">^>A",
 }
 
 
-def solve_dpad(code, best=1000000000):
-    current = "A"
-    result = ""
-    for c in code:
-        if current == "A" and c == "<":
-            result += "v<<"
-        elif current == "A" and c == "v":
-            result += "<v"
-        elif current == "A" and c == "^":
-            result += "<"
-        elif current == "A" and c == ">":
-            result += "v"
+def solve_dpad(code):
+    best = 100000000000000
+    Q = deque([(dpad["A"], 0, "")])
+    results = set()
+    while Q:
+        (r, c), n, route = Q.popleft()
+        if (r, c) == (0, 0):
+            continue
+        if n == len(code):
+            if len(route) < best:
+                best = len(route)
+                results = set()
+            results.add(route)
+            continue
+        nr, nc = dpad[code[n]]
+        if (r, c) == (nr, nc):
+            Q.append(((r, c), n + 1, route + "A"))
+            continue
+        if nr > r:
+            Q.append(((r + 1, c), n, route + "v"))
+        if nr < r:
+            Q.append(((r - (r - nr), c), n, route + "^" * (r - nr)))
+        if nc > c:
+            Q.append(((r, c + (nc - c)), n, route + ">" * (nc - c)))
+        if nc < c:
+            Q.append(((r, c - 1), n, route + "<"))
 
-        elif current == "^" and c == "<":
-            result += "v<"
-        elif current == "^" and c == "v":
-            result += "v"
-        elif current == "^" and c == "A":
-            result += ">"
-        elif current == "^" and c == ">":
-            result += "v>"
+    return results
 
-        elif current == ">" and c == "<":
-            result += "<<"
-        elif current == ">" and c == "v":
-            result += "<"
-        elif current == ">" and c == "A":
-            result += "^"
-        elif current == ">" and c == "^":
-            result += "<^"
 
-        elif current == "v" and c == "<":
-            result += "<"
-        elif current == "v" and c == "^":
-            result += "^"
-        elif current == "v" and c == "A":
-            result += "^>"
-        elif current == "v" and c == ">":
-            result += ">"
-
-        elif current == "<" and c == "v":
-            result += ">"
-        elif current == "<" and c == "^":
-            result += ">^"
-        elif current == "<" and c == "A":
-            result += ">>^"
-        elif current == "<" and c == ">":
-            result += ">>"
-        elif current == c:
-            pass
-        else:
-            assert False, f"{current}, {c}"
-        result += "A"
-        current = c
-    return result
+# def solve_dpad(code):
+#     current = "A"
+#     result = ""
+#     for c in code:
+#         if current == "A" and c == "<":
+#             result += "v<<"
+#         elif current == "A" and c == "v":
+#             result += "<v"
+#         elif current == "A" and c == "^":
+#             result += "<"
+#         elif current == "A" and c == ">":
+#             result += "v"
+#
+#         elif current == "^" and c == "<":
+#             result += "v<"
+#         elif current == "^" and c == "v":
+#             result += "v"
+#         elif current == "^" and c == "A":
+#             result += ">"
+#         elif current == "^" and c == ">":
+#             result += "v>"
+#
+#         elif current == ">" and c == "<":
+#             result += "<<"
+#         elif current == ">" and c == "v":
+#             result += "<"
+#         elif current == ">" and c == "A":
+#             result += "^"
+#         elif current == ">" and c == "^":
+#             result += "<^"
+#
+#         elif current == "v" and c == "<":
+#             result += "<"
+#         elif current == "v" and c == "^":
+#             result += "^"
+#         elif current == "v" and c == "A":
+#             result += "^>"
+#         elif current == "v" and c == ">":
+#             result += ">"
+#
+#         elif current == "<" and c == "v":
+#             result += ">"
+#         elif current == "<" and c == "^":
+#             result += ">^"
+#         elif current == "<" and c == "A":
+#             result += ">>^"
+#         elif current == "<" and c == ">":
+#             result += ">>"
+#         elif current == c:
+#             pass
+#         else:
+#             assert False, f"{current}, {c}"
+#         result += "A"
+#         current = c
+#     return {result}
 
 
 result = 0
 for line in lines:
-    ans = solve_numpad(line)
     best = 1000000000000
-    for aa in ans:
-        a = aa
-        for _ in range(2):
-            a = solve_dpad(a)
-        best = min(best, len(a))
-
+    for a in solve_numpad(line):
+        for aa in solve_dpad(a):
+            for aaa in solve_dpad(aa):
+                best = min(best, len(aaa))
     result += best * int(line.replace("A", ""))
 
 # Part 1 = 156714
@@ -165,7 +195,7 @@ def breakup(code):
     while code:
         for m in moves:
             if code.startswith(m):
-                code = code[len(m) :]
+                code = code[len(m):]
                 counter[m] = counter.get(m, 0) + 1
                 break
     return counter
@@ -179,25 +209,26 @@ def solve(code, n):
         return len(code)
     if (code, n) in seen:
         return seen[code, n]
-    ncode = solve_dpad(code)
-    counter = breakup(ncode)
-    result = 0
-    for k, v in counter.items():
-        result += v * solve(k, n - 1)
-    seen[code, n] = result
-    return result
+    minimum = 10000000000000000000
+    for ncode in solve_dpad(code):
+        result = 0
+        counter = breakup(ncode)
+        for k, v in counter.items():
+            result += v * solve(k, n - 1)
+        minimum = min(minimum, result)
+    seen[code, n] = minimum
+    return minimum
 
 
 result = 0
 for line in lines:
-    ans = solve_numpad(line)
     best = 100000000000000000000000
-    for aa in ans:
-        aa = solve_dpad(aa)
-        a = solve(aa, 24)
-        best = min(best, a)
-
+    for a in solve_numpad(line):
+        for aa in solve_dpad(a):
+            best = min(best, solve(aa, 24))
     result += best * int(line.replace("A", ""))
+
 
 # Part 2 = 191139369248202
 print(f"answer = {result}")
+assert result == 191139369248202
