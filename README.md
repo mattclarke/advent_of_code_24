@@ -137,8 +137,12 @@ Let's speed it up:
 - Part 2: Same but with a bigger cheat time.
 
 ## Day 21:
-- Part 1:
-- Part 2:
+- Part 1: Implementing the algorithm. Didn't read the instructions correctly, so missed that the robot cannot pass through the blank square.
+- Part 2: Took days to solve, not my finest effort. As the number of moves approximately double with each robot added it soon becomes too big. However, all the moves are constructed from a limited sets of sub-moves, so we just need to count the number of each sub-move in the move and then only recurse on each sub-move and multiple the result by the number of occurances. Finally, to make it fast use a cache.
+
+I actually tried this solution earlier on but I must have made a mistake because I got the wrong answer. Reimplementing it from sratch on the 26th worked.
+
+The mistake was that when calculating the numpad, the order of, say, "^>" matters. If we change it to ">^" then we get the wrong answer! Using BFS to generate the numpad would have caught this.
 
 ## Day 22:
 - Part 1: Simple - just a test that one has entered the algorithm correctly.
