@@ -116,7 +116,9 @@ B = B ^ C
 OUT B % 8
 Repeat if A is not zero
 ```
-Basically B is initially the last 3 bits of A and A has those 3 bits popped off.
+Integer division by 2^n is equivalent to `>> n`.
+
+B is initially the last 3 bits of A and A has those 3 bits popped off.
 This means we can regenerate the original A by left shifting by 3 and ORing with B.
 
 We know that the final value of A is 0 because it exits, so we can work backwards.
@@ -125,6 +127,8 @@ We also know that B is in the range 0 to 7 because `B = B ^ 3`.
 For the last value (0) of our program
 OUT B % 8 must be 0
 So we can try all the possible values of B and see which ones (plural!) work.
+
+Note: plural because multiple values of B could be a solution.
 
 A = 0
 B = A % 8 => 0

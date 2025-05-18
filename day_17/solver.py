@@ -138,8 +138,10 @@ def solve(program, required_a):
         if b % 8 == program[-1]:
             ans = solve(program[:-1], a)
             if ans is None:
+                # Value for A fails for next digit, so try a different B guess.
                 continue
             return ans
+    return None
 
 
 result = solve(commands, 0)
