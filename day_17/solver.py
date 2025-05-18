@@ -109,3 +109,39 @@ while output != commands:
 
 # Part 2 = 236539226447469
 print(f"answer = {a}")
+
+# Internet solution (see README)
+#
+# Input program can be written as:
+#   B = A % 8
+#   B = B ^ 3
+#   C = A // (2**B)   => A >> B
+#   A = A // (2**3)   => A >> 3
+#   B = B ^ 5
+#   B = B ^ C
+#   OUT B % 8
+#   Repeat if A is not zero
+
+
+def solve(program, required_a):
+    if len(program) == 0:
+        return required_a
+    # B can only be in range 0 to 7 due to % 8
+    for b_guess in range(8):
+        # First back calculate A from the required_a
+        a = required_a << 3 | b_guess
+        b = a % 8
+        b = b ^ 3
+        c = a >> b
+        b = b ^ 5
+        b = b ^ c
+        if b % 8 == program[-1]:
+            ans = solve(program[:-1], a)
+            if ans is None:
+                continue
+            return ans
+
+
+result = solve(commands, 0)
+assert result == 236539226447469
+print(f"answer = {result}")

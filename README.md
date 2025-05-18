@@ -103,9 +103,9 @@ Runs in about 6 seconds with Python. It would be nice to make it a little quicke
 
 ## Day 17:
 - Part 1: Implemented the simple computer.
-- Part 2: It would run for days, so I looked for a pattern. I noticed that the digits for the last output value repeats after 8 steps, and as more output digits are added each step repeats 8**n times before moving to the next value. The second to last value does something similar but 8**(n-1) and so on. That was enough to work out what was going on. See the code for a better description.
+- Part 2: It would run for days, so I looked for a pattern. I noticed that the digits for the last output value repeats after 8 steps, and as more output digits are added each step repeats 8^n times before moving to the next value. The second to last value does something similar but 8^(n-1) and so on. That was enough to work out what was going on. See the code for a better description.
 
-Reverse engineering the code means my input is:
+Reverse engineering the code means my input program (2,4,1,3,7,5,0,3,1,5,4,4,5,5,3,0):
 ```
 B = A % 8
 B = B ^ 3
@@ -116,9 +116,44 @@ B = B ^ C
 OUT B % 8
 Repeat if A is not zero
 ```
-We know that the final value of A is 0 because it exits, so we can work backwards.
+Basically B is initially the last 3 bits of A and A has those 3 bits popped off.
+This means we can regenerate the original A by left shifting by 3 and ORing with B.
 
-TODO: finish this!
+We know that the final value of A is 0 because it exits, so we can work backwards.
+We also know that B is in the range 0 to 7 because `B = B ^ 3`.
+```
+For the last value (0) of our program
+OUT B % 8 must be 0
+So we can try all the possible values of B and see which ones (plural!) work.
+
+A = 0
+B = A % 8 => 0
+B = B ^ 3 => 3
+C = A >> B => 0
+A = A >> 3 => 0
+B = B ^ 5 => 6
+B = B ^ C => 6
+OUT B % 8 => 6 (wrong!)
+A == 0 => exit
+
+So, A = 0 is not a possible solution.
+
+Let's try another one:
+
+A = 6
+B = A % 9 => 6
+B = B ^ 3 => 5
+C = A >> B => 0
+A = A >> 3 => 0
+B = B ^ 5 => 0
+B = B ^ C => 0
+OUT B % 8 => 0 (correct!)
+A == 0 => exit
+
+A = 6 is a possible solution for getting the last output correct.
+This means what when generating the previous output number (3) the final value of A must be 6.
+```
+See the code!
 
 ## Day 18:
 - Part 1: For fun I did it like Conway's GoL. Might not be the most efficient but is quick enough.
