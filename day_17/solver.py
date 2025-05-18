@@ -102,6 +102,10 @@ while output != commands:
     registers = REGISTERS[:]
     registers[A] = a
     output = solve(registers)
+    if len(output) < len(commands):
+        # Short cut: multiplying by 8 increases the number of digits outputed by 1
+        a *= 8
+        continue
     for i in range(len(output)):
         if output[~i] != commands[~i]:
             a += 8 ** (len(commands) - 1 - i)
@@ -145,5 +149,5 @@ def solve(program, required_a):
 
 
 result = solve(commands, 0)
-assert result == 236539226447469
 print(f"answer = {result}")
+assert result == 236539226447469
